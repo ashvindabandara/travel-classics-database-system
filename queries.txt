@@ -1,0 +1,239 @@
+-- Table structure for table Room_Category
+CREATE TABLE Room_Category (
+  room_category_id SERIAL PRIMARY KEY,
+  category VARCHAR(45) NULL
+);
+
+-- Table structure for table Hotel
+CREATE TABLE Hotel (
+  hotel_id SERIAL PRIMARY KEY,
+  name VARCHAR(45) NULL,
+  email VARCHAR(45) NULL,
+  phone VARCHAR(10) NULL,
+  country VARCHAR(45) NULL,
+  street VARCHAR(45) NULL,
+  city VARCHAR(45) NULL
+);
+
+-- Table structure for table Room
+CREATE TABLE Room (
+  room_id SERIAL PRIMARY KEY,
+  price FLOAT NULL,
+  description TEXT NULL,
+  condition VARCHAR(45) NULL,
+  hotel_id INT NOT NULL,
+  room_category_id INT NOT NULL,
+  CONSTRAINT fk_Room_Hotel1 FOREIGN KEY (hotel_id) REFERENCES Hotel (hotel_id),
+  CONSTRAINT fk_Room_Room_Category1 FOREIGN KEY (room_category_id) REFERENCES Room_Category (room_category_id)
+);
+
+-- Table structure for table Facility
+CREATE TABLE Facility (
+  facility_id SERIAL PRIMARY KEY,
+  facility VARCHAR(45) NULL,
+  hotel_id INT NOT NULL,
+  CONSTRAINT fk_Facility_Hotel1 FOREIGN KEY (hotel_id) REFERENCES Hotel (hotel_id)
+);
+
+-- Table structure for table Transaction
+CREATE TABLE Transaction (
+  transaction_id SERIAL PRIMARY KEY,
+  type VARCHAR(45) NULL,
+  date DATE NULL,
+  time TIME NULL,
+  amount FLOAT NULL
+);
+
+-- Table structure for table Traveler
+CREATE TABLE Traveler (
+  traveler_id SERIAL PRIMARY KEY,
+  first_name VARCHAR(45) NULL,
+  last_name VARCHAR(45) NULL,
+  country VARCHAR(45) NULL,
+  address VARCHAR(45) NULL,
+  email VARCHAR(45) NULL,
+  phone VARCHAR(12) NULL
+);
+
+-- Table structure for table Reservation
+CREATE TABLE Reservation (
+  reservation_id SERIAL PRIMARY KEY,
+  date DATE NULL,
+  duration VARCHAR(45) NULL,
+  no_of_guests VARCHAR(45) NULL,
+  time TIME NULL,
+  amount_paid FLOAT NULL,
+  traveler_id INT NOT NULL,
+  transaction_id INT NOT NULL,
+  room_id INT NOT NULL,
+  CONSTRAINT fk_Reservation_Traveler FOREIGN KEY (traveler_id) REFERENCES Traveler (traveler_id),
+  CONSTRAINT fk_Reservation_Transaction1 FOREIGN KEY (transaction_id) REFERENCES Transaction (transaction_id),
+  CONSTRAINT fk_Reservation_Room1 FOREIGN KEY (room_id) REFERENCES Room (room_id)
+);
+
+CREATE TABLE Report (
+  report_id SERIAL PRIMARY KEY,
+  title VARCHAR(45) NULL,
+  description VARCHAR(45) NULL,
+  date DATE NULL,
+  country VARCHAR(45) NULL,
+  location VARCHAR(45) NULL,
+  traveler_id INT NOT NULL,
+  CONSTRAINT fk_Report_Traveler1 FOREIGN KEY (traveler_id) REFERENCES Traveler (traveler_id)
+);
+
+INSERT INTO Room_Category (room_category_id, category) VALUES
+(1, 'Single'),
+(2, 'Double'),
+(3, 'Suite'),
+(4, 'Family'),
+(5, 'Executive'),
+(6, 'Deluxe'),
+(7, 'Standard'),
+(8, 'Economy'),
+(9, 'Luxury'),
+(10, 'Business'),
+(11, 'Presidential'),
+(12, 'Junior Suite'),
+(13, 'Apartment'),
+(14, 'Penthouse'),
+(15, 'Duplex');
+
+INSERT INTO Hotel (hotel_id, name, email, phone, country, street, city) VALUES
+(1, 'Grand Plaza Hotel', 'grandplaza@example.com', '1234567890', 'USA', '123 Main St', 'New York'),
+(2, 'Royal Palace Hotel', 'royalpalace@example.com', '9876543210', 'UK', '456 High St', 'London'),
+(3, 'Sunset Resort', 'sunset@example.com', '3456789012', 'Spain', '789 Beach Rd', 'Barcelona'),
+(4, 'Mountain View Lodge', 'mountainview@example.com', '5678901234', 'Canada', '101 Summit Ave', 'Vancouver'),
+(5, 'City Lights Inn', 'citylights@example.com', '2345678901', 'France', '234 Rue de la Ville', 'Paris'),
+(6, 'Golden Sands Resort', 'goldensands@example.com', '8765432109', 'Italy', '567 Shoreline Blvd', 'Rome'),
+(7, 'Harbor View Hotel', 'harborview@example.com', '1098765432', 'Australia', '890 Portside St', 'Sydney'),
+(8, 'Green Valley Retreat', 'greenvalley@example.com', '3210987654', 'Germany', '345 Meadow Ln', 'Berlin'),
+(9, 'Silver Oak Lodge', 'silveroak@example.com', '4321098765', 'Switzerland', '678 Forest Rd', 'Zurich'),
+(10, 'Ocean Breeze Inn', 'oceanbreeze@example.com', '2109876543', 'Japan', '910 Seaside Dr', 'Tokyo'),
+(11, 'Alpine Chalet', 'alpinechalet@example.com', '5432109876', 'Austria', '123 Mountain Rd', 'Vienna'),
+(12, 'Tropical Paradise Resort', 'tropicalparadise@example.com', '6543210987', 'Brazil', '456 Palm Blvd', 'Rio de Janeiro'),
+(13, 'Majestic Towers Hotel', 'majestictowers@example.com', '7890123456', 'India', '789 Regal Rd', 'Mumbai'),
+(14, 'Countryside Inn', 'countryside@example.com', '9876543210', 'Netherlands', '101 Farmstead Ave', 'Amsterdam'),
+(15, 'Snowy Peaks Lodge', 'snowypeaks@example.com', '2345678901', 'Norway', '234 Frosty Ln', 'Oslo');
+
+
+INSERT INTO Room (room_id, price, description, condition, hotel_id, room_category_id) VALUES
+(1, 150.00, 'Cozy single room with a city view.', 'Available', 1, 1),
+(2, 200.00, 'Spacious double room with modern amenities.', 'Occupied', 2, 2),
+(3, 300.00, 'Luxurious suite with a breathtaking view.', 'Available', 3, 3),
+(4, 180.00, 'Family room with comfortable furnishings.', 'Available', 4, 4),
+(5, 250.00, 'Executive room with a business-friendly setup.', 'Occupied', 5, 5),
+(6, 350.00, 'Deluxe room with premium facilities.', 'Available', 6, 6),
+(7, 120.00, 'Standard room with essential amenities.', 'Occupied', 7, 7),
+(8, 100.00, 'Economy room for budget-conscious travelers.', 'Available', 8, 8),
+(9, 400.00, 'Luxury room with high-end features.', 'Available', 9, 9),
+(10, 280.00, 'Business-class room with workspace.', 'Occupied', 10, 10),
+(11, 500.00, 'Presidential suite for a luxurious stay.', 'Available', 11, 11),
+(12, 320.00, 'Junior suite with a blend of comfort and style.', 'Available', 12, 12),
+(13, 450.00, 'Spacious apartment-style accommodation.', 'Occupied', 13, 13),
+(14, 600.00, 'Penthouse with panoramic city views.', 'Available', 14, 14),
+(15, 380.00, 'Duplex room with a unique two-level design.', 'Available', 15, 15);
+
+
+INSERT INTO Facility (facility_id, facility, hotel_id) VALUES
+(1, 'Free Wi-Fi', 1),
+(2, 'Swimming Pool', 2),
+(3, 'Fitness Center', 3),
+(4, 'Parking', 4),
+(5, 'Restaurant', 5),
+(6, 'Spa', 6),
+(7, 'Meeting Rooms', 7),
+(8, 'Garden', 8),
+(9, 'Room Service', 9),
+(10, 'Business Center', 10),
+(11, 'Concierge', 11),
+(12, 'Beach Access', 12),
+(13, 'Conference Facilities', 13),
+(14, 'Pet-Friendly', 14),
+(15, 'Ski Storage', 15);
+
+
+INSERT INTO Transaction (transaction_id, type, date, time, amount) VALUES
+(1, 'Payment', '2024-01-10', '10:30:00', 150.00),
+(2, 'Payment', '2024-01-11', '11:45:00', 200.00),
+(3, 'Payment', '2024-01-12', '12:15:00', 300.00),
+(4, 'Payment', '2024-01-13', '14:20:00', 180.00),
+(5, 'Payment', '2024-01-14', '16:00:00', 250.00),
+(6, 'Payment', '2024-01-15', '18:30:00', 350.00),
+(7, 'Payment', '2024-01-16', '20:45:00', 120.00),
+(8, 'Payment', '2024-01-17', '22:00:00', 100.00),
+(9, 'Payment', '2024-01-18', '09:30:00', 400.00),
+(10, 'Payment', '2024-01-19', '11:00:00', 280.00),
+(11, 'Payment', '2024-01-20', '13:45:00', 500.00),
+(12, 'Payment', '2024-01-21', '15:15:00', 320.00),
+(13, 'Payment', '2024-01-22', '17:30:00', 450.00),
+(14, 'Payment', '2024-01-23', '19:00:00', 600.00),
+(15, 'Payment', '2024-01-24', '21:00:00', 380.00);
+
+
+INSERT INTO Traveler (traveler_id, first_name, last_name, country, address, email, phone) VALUES
+(1, 'John', 'Doe', 'USA', '123 Main St', 'john.doe@example.com', '123456789012'),
+(2, 'Jane', 'Smith', 'UK', '456 High St', 'jane.smith@example.com', '234567890123'),
+(3, 'Carlos', 'Gomez', 'Spain', '789 Beach Rd', 'carlos.gomez@example.com', '345678901234'),
+(4, 'Emily', 'Johnson', 'Canada', '101 Summit Ave', 'emily.johnson@example.com', '456789012345'),
+(5, 'Francois', 'Dupont', 'France', '234 Rue de la Ville', 'francois.dupont@example.com', '567890123456'),
+(6, 'Isabella', 'Rossi', 'Italy', '567 Shoreline Blvd', 'isabella.rossi@example.com', '678901234567'),
+(7, 'Olivia', 'Wang', 'Australia', '890 Portside St', 'olivia.wang@example.com', '789012345678'),
+(8, 'Lukas', 'Müller', 'Germany', '345 Meadow Ln', 'lukas.mueller@example.com', '890123456789'),
+(9, 'Sophie', 'Lefevre', 'Switzerland', '678 Forest Rd', 'sophie.lefevre@example.com', '901234567890'),
+(10, 'Hiroshi', 'Yamamoto', 'Japan', '910 Seaside Dr', 'hiroshi.yamamoto@example.com', '012345678901'),
+(11, 'Eva', 'Weber', 'Austria', '123 Mountain Rd', 'eva.weber@example.com', '123456789012'),
+(12, 'Maria', 'Silva', 'Brazil', '456 Palm Blvd', 'maria.silva@example.com', '234567890123'),
+(13, 'Raj', 'Patel', 'India', '789 Regal Rd', 'raj.patel@example.com', '345678901234'),
+(14, 'Pieter', 'Van den Berg', 'Netherlands', '101 Farmstead Ave', 'pieter.vandenberg@example.com', '456789012345'),
+(15, 'Lena', 'Olsen', 'Norway', '234 Frosty Ln', 'lena.olsen@example.com', '567890123456');
+
+INSERT INTO Reservation (reservation_id, date, duration, no_of_guests, time, amount_paid, traveler_id, transaction_id, room_id) VALUES
+(1, '2024-01-10', '2 days', '1', '12:00:00', 150.00, 1, 1, 1),
+(2, '2024-01-11', '3 days', '2', '14:00:00', 200.00, 2, 2, 2),
+(3, '2024-01-12', '1 day', '1', '16:00:00', 300.00, 3, 3, 3),
+(4, '2024-01-13', '4 days', '3', '18:00:00', 180.00, 4, 4, 4),
+(5, '2024-01-14', '2 days', '1', '20:00:00', 250.00, 5, 5, 5),
+(6, '2024-01-15', '3 days', '2', '22:00:00', 350.00, 6, 6, 6),
+(7, '2024-01-16', '1 day', '1', '09:00:00', 120.00, 7, 7, 7),
+(8, '2024-01-17', '4 days', '3', '11:00:00', 100.00, 8, 8, 8),
+(9, '2024-01-18', '2 days', '1', '13:00:00', 400.00, 9, 9, 9),
+(10, '2024-01-19', '3 days', '2', '15:00:00', 280.00, 10, 10, 10),
+(11, '2024-01-20', '1 day', '1', '17:00:00', 500.00, 11, 11, 11),
+(12, '2024-01-21', '4 days', '3', '19:00:00', 320.00, 12, 12, 12),
+(13, '2024-01-22', '2 days', '1', '21:00:00', 450.00, 13, 13, 13),
+(14, '2024-01-23', '3 days', '2', '09:30:00', 600.00, 14, 14, 14),
+(15, '2024-01-24', '1 day', '1', '11:30:00', 380.00, 15, 15, 15);
+
+
+-- Sample Inserts for Report table
+INSERT INTO Report (report_id, title, description, date, country, location, traveler_id) VALUES
+  (1, 'Lost Luggage', 'Report of lost luggage during travel', '2024-01-01', 'USA', 'Airport A', 1),
+  (2, 'Excellent Service', 'Positive feedback on hotel service', '2024-02-05', 'France', 'City B', 2),
+  (3, 'Delayed Flight', 'Complaint about a delayed flight', '2024-03-10', 'Germany', 'Airport C', 3),
+  (4, 'Amazing Experience', 'Sharing a great travel experience', '2024-04-15', 'Spain', 'Resort D', 4),
+  (5, 'Room Condition Issue', 'Report of issues with room conditions', '2024-05-20', 'Italy', 'Hotel E', 5),
+  (6, 'Lost Reservation', 'Report of a lost hotel reservation', '2024-06-25', 'Canada', 'City F', 6),
+  (7, 'Excellent Tour Guide', 'Compliment for an excellent tour guide', '2024-07-30', 'Australia', 'Landmark G', 7),
+  (8, 'Security Concerns', 'Report of security concerns at a hotel', '2024-08-05', 'Japan', 'Hotel H', 8),
+  (9, 'Great Food Experience', 'Positive feedback on restaurant experience', '2024-09-10', 'Brazil', 'Restaurant I', 9),
+  (10, 'Flight Cancellation', 'Complaint about a canceled flight', '2024-10-15', 'Mexico', 'Airport J', 10),
+  (11, 'Excellent Hotel Staff', 'Compliment for excellent hotel staff', '2024-11-20', 'India', 'Hotel K', 11),
+  (12, 'Car Rental Issues', 'Report of issues with car rental service', '2024-12-25', 'South Africa', 'City L', 12),
+  (13, 'Beautiful Scenery', 'Appreciation for beautiful natural scenery', '2025-01-01', 'New Zealand', 'Scenic Spot M', 13),
+  (14, 'Lost Passport', 'Report of a lost passport during travel', '2025-02-05', 'Ireland', 'City N', 14),
+  (15, 'Positive Hotel Review', 'Positive review of a hotel stay', '2025-03-10', 'United Kingdom', 'Hotel O', 15);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
